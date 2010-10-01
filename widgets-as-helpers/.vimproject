@@ -2,6 +2,7 @@ widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.
  application=application {
   Bootstrap.php
   configs=configs {
+   application.ini
   }
   controllers=controllers {
    ErrorController.php
@@ -12,7 +13,6 @@ widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.
   modules=modules {
    poll=poll {
     configs=configs {
-     poll.ini
     }
     controllers=controllers {
     }
@@ -29,6 +29,32 @@ widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.
      helpers=helpers {
      }
      scripts=scripts {
+     }
+    }
+   }
+   user=user {
+    Bootstrap.php
+    configs=configs {
+     user.ini
+    }
+    controllers=controllers {
+    }
+    forms=forms {
+     Login.php
+    }
+    helpers=helpers {
+     HandleLogin.php
+    }
+    models=models {
+    }
+    views=views {
+     filters=filters {
+     }
+     helpers=helpers {
+     }
+     scripts=scripts {
+      login.phtml
+      profile.phtml
      }
     }
    }

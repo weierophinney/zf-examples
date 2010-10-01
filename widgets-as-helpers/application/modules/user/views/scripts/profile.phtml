@@ -1,0 +1,12 @@
+<div id="user-profile">
+    <h4><?php echo $this->escape($this->identity['username']) ?></h4>
+    <dl>
+    <?php foreach ($this->identity as $field => $value): ?>
+        <?php if ($field == 'username'):
+            continue;
+        endif ?>
+        <dt><?php echo ucfirst($field) ?>:</dt>
+        <dd><?php echo $this->escape($value) ?>:</dd>
+    <?php endforeach ?>
+    </dl>
+</div>

@@ -31,7 +31,7 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
             return;
         }
 
-        $view->profile = $view->partial('profile.phtml', array(
+        $view->user = $view->partial('profile.phtml', array(
             'identity' => Zend_Auth::getInstance()->getIdentity(),
         ));
     }
@@ -42,7 +42,7 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
             return;
         }
 
-        $view->profile = $view->partial('login.phtml', array(
+        $view->user = $view->partial('login.phtml', array(
             'form'  => $form,
             'error' => $error,
         ));

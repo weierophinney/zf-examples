@@ -1,0 +1,64 @@
+widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.phtml *.css *.js *.sql TODO README ^.git" {
+ application=application {
+  Bootstrap.php
+  configs=configs {
+  }
+  controllers=controllers {
+   ErrorController.php
+   IndexController.php
+  }
+  models=models {
+  }
+  modules=modules {
+   poll=poll {
+    configs=configs {
+     poll.ini
+    }
+    controllers=controllers {
+    }
+    data=data {
+    }
+    models=models {
+     sql=sql {
+      poll.sql
+     }
+    }
+    views=views {
+     filters=filters {
+     }
+     helpers=helpers {
+     }
+     scripts=scripts {
+     }
+    }
+   }
+  }
+  views=views {
+   helpers=helpers {
+   }
+   scripts=scripts {
+    error=error {
+     error.phtml
+    }
+    index=index {
+     index.phtml
+    }
+   }
+  }
+ }
+ docs=docs {
+ }
+ library=library {
+ }
+ public=public {
+  index.php
+ }
+ tests=tests {
+  application=application {
+   bootstrap.php
+  }
+  library=library {
+   bootstrap.php
+  }
+ }
+}

@@ -3,6 +3,7 @@
 class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
 {
     protected $config;
+    protected $view;
 
     public function __construct(Zend_Config $config)
     {
@@ -91,13 +92,17 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
 
     public function getView()
     {
+        if (null !== $this->view) {
+            return $this->view;
+        }
+
         $controller = $this->getActionController();
         $view = $controller->view;
         if (!$view instanceof Zend_View_Abstract) {
             return;
         }
-        $view->addScriptPath(dirname(__FILE__) . '/../views/scripts')
-             ->addHelperPath(dirname(__FILE__) . '/../views/helpers', 'User_View_Helper');
+        $view->addScriptPath(dirname(__FILE__) . '/../views/scripts');
+        $this->view = $view;
         return $view;
     }
 }

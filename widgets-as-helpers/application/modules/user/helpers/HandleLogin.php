@@ -2,6 +2,13 @@
 
 class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
 {
+    protected $config;
+
+    public function __construct(Zend_Config $config)
+    {
+        $this->config = $config;
+    }
+
     public function preDispatch()
     {
         if (null === ($controller = $this->getActionController())) {
@@ -54,17 +61,16 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
             return;
         }
 
-        $config   = $this->getConfig();
         $username = $form->username->getValue();
         $password = $form->password->getValue();
-        $password = substr($username, 0, 3) . $password . $config->salt;
+        $password = substr($username, 0, 3) . $password . $this->config->salt;
         $password = hash('sha256', $password);
 
         $adapter = new Zend_Auth_Adapter_DbTable(
             Zend_Db_Table_Abstract::getDefaultAdapter(),
-            $config->adapter->table,
-            $config->adapter->identity_column,
-            $config->adapter->password_column
+            $this->config->adapter->table,
+            $this->config->adapter->identity_column,
+            $this->config->adapter->password_column
         );
         $adapter->setIdentity($username)
                 ->setCredential($password);
@@ -81,14 +87,6 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
         );
 
         $this->createProfileWidget();
-    }
-
-    public function getConfig()
-    {
-        if (null === $this->config) {
-            $this->config = new Zend_Config_Ini(dirname(__FILE__) . '/../configs/user.ini', APPLICATION_ENV);
-        }
-        return $this->config;
     }
 
     public function getView()

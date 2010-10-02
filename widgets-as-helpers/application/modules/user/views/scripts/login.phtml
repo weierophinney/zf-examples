@@ -1,6 +1,7 @@
 <div id="login-widget">
-    <?php if ($this->error): ?>
+<?php if ($this->error): ?>
     <p class="error"><?php echo $this->escape($this->error) ?></p>
+<?php endif ?>
     <?php 
     $this->form->setAction('#')
                ->setMethod('post');

@@ -1,7 +1,8 @@
+<?php $identity = (array) $this->identity; ?>
 <div id="user-profile">
-    <h4><?php echo $this->escape($this->identity['username']) ?></h4>
+    <h4><?php echo $this->escape($identity['username']) ?></h4>
     <dl>
-    <?php foreach ($this->identity as $field => $value): ?>
+    <?php foreach ($identity as $field => $value): ?>
         <?php if ($field == 'username'):
             continue;
         endif ?>

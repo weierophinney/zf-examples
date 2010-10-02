@@ -55,6 +55,7 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
 
         if (!$request->isPost()) {
             $this->renderLoginForm($form);
+            return;
         }
 
         if (!$form->isValid($request->getPost())) {

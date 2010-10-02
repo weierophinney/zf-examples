@@ -8,6 +8,11 @@ widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.
    ErrorController.php
    IndexController.php
   }
+  layouts=layouts {
+   scripts=scripts {
+    layout.phtml
+   }
+  }
   models=models {
   }
   modules=modules {
@@ -80,8 +85,9 @@ widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.
  }
  library=library {
  }
- public=public {
+ public=public filter="*.php *.js *.css .htaccess" {
   index.php
+  .htaccess
  }
  tests=tests {
   application=application {

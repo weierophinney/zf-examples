@@ -13,6 +13,7 @@ widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.
   modules=modules {
    poll=poll {
     configs=configs {
+     poll.ini
     }
     controllers=controllers {
     }
@@ -46,6 +47,9 @@ widgets="/home/matthew/git/zf-examples/widgets-as-helpers" CD=. filter="*.php *.
      HandleLogin.php
     }
     models=models {
+     sql=sql {
+      users.sql
+     }
     }
     views=views {
      filters=filters {

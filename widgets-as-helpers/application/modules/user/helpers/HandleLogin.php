@@ -53,16 +53,26 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
         $request = $this->getRequest();
         $form    = new User_Form_Login();
 
+        // Not a POST? just render the form
         if (!$request->isPost()) {
             $this->renderLoginForm($form);
             return;
         }
 
+        // Does the POST contain the form namespace? If not, just render the form
+        $namespace = $form->getElementsBelongTo();
+        if (!empty($namespace) && !is_array($request->getPost($namespace))) {
+            $this->renderLoginForm($form);
+            return;
+        }
+
+        // Is the form valid? if not, re-render it.
         if (!$form->isValid($request->getPost())) {
             $this->renderLoginForm($form);
             return;
         }
 
+        // Prepare the authentication adapter
         $username = $form->username->getValue();
         $password = $form->password->getValue();
         $password = substr($username, 0, 3) . $password . $this->config->salt;
@@ -77,6 +87,7 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
         $adapter->setIdentity($username)
                 ->setCredential($password);
 
+        // Authenticate; if fails, re-render the form
         $auth = Zend_Auth::getInstance();
         $result = $auth->authenticate($adapter);
         if (!$result->isValid()) {
@@ -84,6 +95,7 @@ class User_Helper_HandleLogin extends Zend_Controller_Action_Helper_Abstract
             return;
         }
 
+        // Success; store the result, and render the profile widget
         $auth->getStorage()->write(
             $adapter->getResultRowObject(null, 'password')
         );

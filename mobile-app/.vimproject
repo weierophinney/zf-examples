@@ -9,6 +9,11 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
    IndexController.php
    MobileController.php
   }
+  layouts=layouts {
+   scripts=scripts {
+    layout.phtml
+   }
+  }
   models=models {
   }
   views=views {

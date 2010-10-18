@@ -51,5 +51,5 @@ WURFL PHP API:
  * Update your application/configs/application.ini to add the following
    lines to the "[production]" section:
     resources.useragent.wurflapi.wurfl_api_version = "1.1"
-    resources.useragent.wurflapi.wurfl_lib_dir = APPLICATION_PATH "/../library/wurfl-php-1.1/WURFL"
+    resources.useragent.wurflapi.wurfl_lib_dir = APPLICATION_PATH "/../library/wurfl-php-1.1/WURFL/"
     resources.useragent.wurflapi.wurfl_config_file = APPLICATION_PATH "/configs/wurfl-config.php"

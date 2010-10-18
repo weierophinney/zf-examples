@@ -2,7 +2,13 @@
 <dl>
 <?php foreach ($this->device->getAllFeatures() as $feature => $value): ?>
     <dt><?php echo $this->escape($feature) ?></dt>
-    <dd><?php echo $this->escape($value) ?></dd>
+    <dd><?php 
+    if (is_string($value)) {
+        echo $this->escape($value);
+    } else {
+        echo '<pre>' . var_export($value, true) . '</pre>';
+    } ?>
+    </dd>
 <?php endforeach ?>
 </dl>
 

@@ -4,6 +4,9 @@ $this->placeholder('sidebar')
      ->setPostfix('</ul>');
 $this->headTitle('Mobile Device Demo')
      ->setSeparator(' - ');
+$this->headLink()->prependStylesheet('/css/960.css')
+                 ->prependStylesheet('/css/text.css')
+                 ->prependStylesheet('/css/reset.css');
 
 echo $this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -11,7 +14,7 @@ echo $this->doctype() ?>
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 <?php 
     echo $this->headTitle();
-    echo $this->headStyle();
+    echo $this->headLink();
     echo $this->headScript();
 ?>
 </head>

@@ -193,6 +193,11 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
  public=public {
   index.php
   .htaccess
+  css=css {
+   960.css
+   reset.css
+   text.css
+  }
  }
  tests=tests {
   phpunit.xml

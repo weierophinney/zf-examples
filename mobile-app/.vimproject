@@ -1,7 +1,8 @@
 mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *.txt *.xml *.json *.css *.js *.sql .htaccess" {
  application=application {
   Bootstrap.php
-  configs=configs {
+  configs=configs filter="*.ini *.json *.yaml *.xml *.php" {
+   application.ini
    wurfl-config.php
   }
   controllers=controllers {

@@ -1,1 +1,22 @@
+<?php 
+$this->placeholder('sidebar')
+     ->setPrefix('<ul class="sidebar">')
+     ->setPostfix('</ul>');
+$this->headTitle('Mobile Device Demo')
+     ->setSeparator(' - ');
+
+echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<?php 
+    echo $this->headTitle();
+    echo $this->headStyle();
+    echo $this->headScript();
+?>
+</head>
+<body>
+<?php echo $this->placeholder('sidebar') ?>
 <?php echo $this->layout()->content; ?>
+</body>
+</html>

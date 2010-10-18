@@ -13,6 +13,7 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
   layouts=layouts {
    scripts=scripts {
     layout.phtml
+    mobile.phtml
    }
   }
   models=models {
@@ -38,6 +39,11 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
   README.txt
  }
  library=library {
+  Ma=Ma {
+   Plugin=Plugin {
+    Layout.php
+   }
+  }
   wurfl-php-1.1=wurfl-php-1.1 {
    WURFL=WURFL {
     Application.php

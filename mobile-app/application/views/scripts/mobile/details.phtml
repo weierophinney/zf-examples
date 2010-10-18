@@ -1,0 +1,8 @@
+<h2>Device Capabilities</h2>
+<dl>
+<?php foreach ($this->device->getAllFeatures() as $feature => $value): ?>
+    <dt><?php echo $this->escape($feature) ?></dt>
+    <dd><?php echo $this->escape($value) ?></dd>
+<?php endforeach ?>
+</dl>
+

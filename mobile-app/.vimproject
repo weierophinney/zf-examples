@@ -1,0 +1,203 @@
+mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *.txt *.xml *.json *.css *.js *.sql .htaccess" {
+ application=application {
+  Bootstrap.php
+  configs=configs {
+   wurfl-config.php
+  }
+  controllers=controllers {
+   ErrorController.php
+   IndexController.php
+   MobileController.php
+  }
+  models=models {
+  }
+  views=views {
+   helpers=helpers {
+   }
+   scripts=scripts {
+    error=error {
+     error.phtml
+    }
+    index=index {
+     index.phtml
+    }
+    mobile=mobile {
+     details.phtml
+     index.phtml
+    }
+   }
+  }
+ }
+ docs=docs {
+  README.txt
+ }
+ library=library {
+  wurfl-php-1.1=wurfl-php-1.1 {
+   WURFL=WURFL {
+    Application.php
+    CapabilitiesHolder.php
+    CapabilityService.php
+    ClassLoader.php
+    Constants.php
+    Context.php
+    CustomDeviceRepository.php
+    Device.php
+    DeviceRepository.php
+    DeviceRepositoryBuilder.php
+    FileManager.php
+    UserAgentHandlerChain.php
+    UserAgentHandlerChainFactory.php
+    WURFLException.php
+    WURFLManager.php
+    WURFLManagerFactory.php
+    WURFLService.php
+    WURFLUtils.php
+    Cache=Cache {
+     APCCacheProvider.php
+     CacheProvider.php
+     CacheProviderFactory.php
+     EAcceleratorCacheProvider.php
+     FileCacheProvider.php
+     MemcacheCacheProvider.php
+     MysqlCacheProvider.php
+     NullCacheProvider.php
+    }
+    Configuration=Configuration {
+     ArrayConfig.php
+     Config.php
+     ConfigFactory.php
+     ConfigHolder.php
+     InMemoryConfig.php
+     XmlConfig.php
+    }
+    Handlers=Handlers {
+     AOLHandler.php
+     AlcatelHandler.php
+     AndroidHandler.php
+     AppleHandler.php
+     BenQHandler.php
+     BlackBerryHandler.php
+     BotCrawlerTranscoderHandler.php
+     CatchAllHandler.php
+     ChromeHandler.php
+     DoCoMoHandler.php
+     Filter.php
+     FirefoxHandler.php
+     GrundigHandler.php
+     HTCHandler.php
+     Handler.php
+     KDDIHandler.php
+     KonquerorHandler.php
+     KyoceraHandler.php
+     LGHandler.php
+     MSIEHandler.php
+     Matcher.php
+     MitsubishiHandler.php
+     MotorolaHandler.php
+     NecHandler.php
+     NokiaHandler.php
+     OperaHandler.php
+     OperaMiniHandler.php
+     PanasonicHandler.php
+     PantechHandler.php
+     PhilipsHandler.php
+     PortalmmmHandler.php
+     QtekHandler.php
+     SPVHandler.php
+     SafariHandler.php
+     SagemHandler.php
+     SamsungHandler.php
+     SanyoHandler.php
+     SendoHandler.php
+     SharpHandler.php
+     SiemensHandler.php
+     SonyEricssonHandler.php
+     ToshibaHandler.php
+     Utils.php
+     VodafoneHandler.php
+     WindowsCEHandler.php
+     Matcher=Matcher {
+      Interface.php
+      LDMatcher.php
+      RISMatcher.php
+     }
+    }
+    Logger=Logger {
+     FileLogger.php
+     Interface.php
+     LoggerFactory.php
+     NullLogger.php
+    }
+    Reloader=Reloader {
+     DefaultWURFLReloader.php
+     Interface.php
+    }
+    Request=Request {
+     GenericRequest.php
+     GenericRequestFactory.php
+     UserAgentNormalizer.php
+     UserAgentNormalizer=UserAgentNormalizer {
+      Android.php
+      BabelFish.php
+      BlackBerry.php
+      Chrome.php
+      Firefox.php
+      Interface.php
+      Konqueror.php
+      MSIE.php
+      Mozilla.php
+      Null.php
+      Opera.php
+      Safari.php
+      UPLink.php
+      Vodafone.php
+      YesWAP.php
+     }
+    }
+    Xml=Xml {
+     AbstractIterator.php
+     DeviceIterator.php
+     DevicePatcher.php
+     Info.php
+     Interface.php
+     ModelDevice.php
+     ParserUtil.php
+     ParsingResult.php
+     PatchManager.php
+     PersistenceProvider.php
+     Utils.php
+     VersionIterator.php
+     WURFLConsistencyVerifier.php
+     WURFLFileParser.php
+     WURFLPatchFileParser.php
+     XMLResourceManager.php
+     PersistenceProvider=PersistenceProvider {
+      APCPersistanceProvider.php
+      AbstractPersistenceProvider.php
+      Exception.php
+      FilePersistenceProvider.php
+      MemcachePersistenceProvider.php
+      MysqlPersistenceProvider.php
+      PersistenceProviderManager.php
+     }
+    }
+   }
+  }
+ }
+ public=public {
+  index.php
+  .htaccess
+ }
+ tests=tests {
+  phpunit.xml
+  application=application {
+   bootstrap.php
+   controllers=controllers {
+    MobileControllerTest.php
+   }
+  }
+  library=library {
+   bootstrap.php
+  }
+ }
+}

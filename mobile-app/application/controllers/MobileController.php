@@ -16,6 +16,15 @@ class MobileController extends Zend_Controller_Action
     public function detailsAction()
     {
         $ua = $this->getInvokeArg('bootstrap')->getResource('useragent');
-        $this->view->device = $ua->getDevice();
+                $this->view->device = $ua->getDevice();
     }
+
+    public function imageAction()
+    {
+        // action body
+    }
+
+
 }
+
+

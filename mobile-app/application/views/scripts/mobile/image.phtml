@@ -1,0 +1,17 @@
+<h2>Scaled Image</h2>
+
+<p>
+    <?php echo $this->tinySrc('/images/seascape.jpg') ?>
+</p>
+
+<?php $this->placeholder('sidebar')->captureStart() ?>
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'index',
+            'action'     => 'index',
+        ), 'default') ?>">Home</a></li>
+
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'mobile',
+            'action'     => 'details',
+        ), 'default') ?>">List of mobile capabilities</a></li>
+<?php $this->placeholder('sidebar')->captureEnd() ?>

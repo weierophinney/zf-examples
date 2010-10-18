@@ -30,6 +30,7 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
     }
     mobile=mobile {
      details.phtml
+     image.phtml
      index.phtml
     }
    }

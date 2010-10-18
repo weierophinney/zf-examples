@@ -201,10 +201,11 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
   .htaccess
   css=css {
    960.css
-   reset.css
-   text.css
+   common.css
    mobile-demo-desktop.css
    mobile-demo-mobile.css
+   reset.css
+   text.css
   }
  }
  tests=tests {

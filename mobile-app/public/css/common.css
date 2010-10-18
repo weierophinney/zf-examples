@@ -1,0 +1,49 @@
+.application {
+    background-color: #000033;
+}
+
+.header, .content, .sidebar, .footer1, .footer2 {
+    background-color: #FFFFFF;
+    padding: 1em 0;
+}
+
+.spacer {
+    height: 1em;
+}
+
+.header h1 {
+    padding-left: 0.5em;
+    font-size: 3em;
+}
+
+.content {
+    overflow: auto;
+}
+
+.footer1, .footer2 {
+    text-align: center;
+}
+
+.content h2, .content p, .content dl {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+dl dt {
+    font-weight: bold;
+}
+
+dl dt:after {
+    content: ":";
+}
+
+dl dd {
+    margin-left: 2em;
+    background-color: #FFCCFF;
+    border: 1px solid #003333;
+    padding: 0.5em;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}

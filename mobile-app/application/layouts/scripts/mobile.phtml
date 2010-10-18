@@ -4,7 +4,8 @@ $this->placeholder('sidebar')
      ->setPostfix('</ul>');
 $this->headTitle('Mobile Device Demo')
      ->setSeparator(' - ');
-$this->headLink()->prependStylesheet('/css/mobile-demo-mobile.css')
+$this->headLink()->prependStylesheet('/css/common.css')
+                 ->prependStylesheet('/css/mobile-demo-mobile.css')
                  ->prependStylesheet('/css/960.css')
                  ->prependStylesheet('/css/text.css')
                  ->prependStylesheet('/css/reset.css');

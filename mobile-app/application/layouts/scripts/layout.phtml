@@ -4,7 +4,8 @@ $this->placeholder('sidebar')
      ->setPostfix('</ul>');
 $this->headTitle('Mobile Device Demo')
      ->setSeparator(' - ');
-$this->headLink()->prependStylesheet('/css/960.css')
+$this->headLink()->prependStylesheet('/css/mobile-demo-desktop.css')
+                 ->prependStylesheet('/css/960.css')
                  ->prependStylesheet('/css/text.css')
                  ->prependStylesheet('/css/reset.css');
 
@@ -19,7 +20,36 @@ echo $this->doctype() ?>
 ?>
 </head>
 <body>
-<?php echo $this->placeholder('sidebar') ?>
-<?php echo $this->layout()->content; ?>
+<div class="container_12 application">
+    <div class="grid_12 header">
+        <h1>ZF Mobile Demo</h1>
+    </div>
+    <div class="clear"></div>
+
+    <div class="grid_12 spacer"></div>
+    <div class="clear"></div>
+
+    <div class="grid_10 content">
+        <?php echo $this->layout()->content; ?>
+    </div>
+    <div class="grid_2 sidebar">
+        <?php echo $this->placeholder('sidebar') ?>
+    </div>
+    <div class="clear"></div>
+
+    <div class="grid_12 spacer"></div>
+    <div class="clear"></div>
+
+    <div class="grid_6 footer1">
+        &copy; 2010 Zend Technologies
+    </div>
+    <div class="grid_6 footer2">
+        <a href="http://framework.zend.com/manual/en/zend.http.user-agent.html">Zend_Http_UserAgent docs</a>
+    </div>
+    <div class="clear"></div>
+
+    <div class="grid_12 spacer"></div>
+    <div class="clear"></div>
+</div>
 </body>
 </html>

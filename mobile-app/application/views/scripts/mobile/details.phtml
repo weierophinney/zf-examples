@@ -12,3 +12,9 @@
 <?php endforeach ?>
 </dl>
 
+<?php $this->placeholder('sidebar')->captureStart() ?>
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'index',
+            'action'     => 'index',
+        ), 'default') ?>">Home</a></li>
+<?php $this->placeholder('sidebar')->captureEnd() ?>

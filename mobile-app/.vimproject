@@ -197,6 +197,7 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
    960.css
    reset.css
    text.css
+   mobile-demo-desktop.css
   }
  }
  tests=tests {

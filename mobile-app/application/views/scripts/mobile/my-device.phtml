@@ -1,0 +1,53 @@
+<?php 
+$ua          = $this->userAgent()->getDevice(); 
+$allFeatures = $ua->getAllFeatures();
+?>
+<h2>My Device</h2>
+
+<dl>
+    <dt>Device</dt>
+    <dd><?php echo $this->escape($ua->getFeature('device')) ?></dd>
+
+    <dt>Browser</dt>
+    <dd><?php echo $this->escape($ua->getBrowser()) ?></dd>
+
+    <dt>Version</dt>
+    <dd><?php echo $this->escape($ua->getBrowserVersion()) ?></dd>
+
+    <dt>Java support?</dt>
+    <dd><?php 
+        $found = false;
+        foreach (array_keys($features) as $feature) {
+            if (0 === strpos($feature, 'j2me')) {
+                $found = true;
+            }
+        }
+        echo (($found) ? 'Yes' : 'No');
+    ?></dd>
+
+    <dt>Flash support?</dt>
+    <dd><?php echo ($ua->hasFlashSupport() ? 'Yes' : 'No');?></dd>
+
+    <dt>PDF support?</dt>
+    <dd><?php echo ($ua->hasPdfSupport() ? 'Yes' : 'No');?></dd>
+
+    <dt>Max supported resolution</dt>
+    <dd><?php echo $ua->getMaxImageWidth(), '/', $ua->getMaxImageHeight(); ?></dd>
+</dl>
+
+<?php $this->placeholder('sidebar')->captureStart() ?>
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'index',
+            'action'     => 'index',
+        ), 'default') ?>">Home</a></li>
+
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'mobile',
+            'action'     => 'details',
+        ), 'default') ?>">List of mobile capabilities</a></li>
+
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'mobile',
+            'action'     => 'image',
+        ), 'default') ?>">Scaled image</a></li>
+<?php $this->placeholder('sidebar')->captureEnd() ?>

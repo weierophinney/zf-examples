@@ -20,6 +20,11 @@
 
         <li><a href="<?php echo $this->url(array(
             'controller' => 'mobile',
+            'action'     => 'my-device',
+        ), 'default') ?>">My Device</a></li>
+
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'mobile',
             'action'     => 'image',
         ), 'default') ?>">Scaled image</a></li>
 <?php $this->placeholder('sidebar')->captureEnd() ?>

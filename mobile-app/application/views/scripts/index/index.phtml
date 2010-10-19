@@ -11,6 +11,11 @@
 <?php $this->placeholder('sidebar')->captureStart() ?>
         <li><a href="<?php echo $this->url(array(
             'controller' => 'mobile',
+            'action'     => 'my-device',
+        ), 'default') ?>">My Device</a></li>
+
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'mobile',
             'action'     => 'details',
         ), 'default') ?>">List of mobile capabilities</a></li>
 

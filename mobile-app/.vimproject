@@ -32,6 +32,7 @@ mobile-app=/home/matthew/git/zf-examples/mobile-app CD=. filter="*.php *.phtml *
      details.phtml
      image.phtml
      index.phtml
+     my-device.phtml
     }
    }
   }

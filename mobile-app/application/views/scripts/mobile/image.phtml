@@ -4,7 +4,7 @@
 <?php 
     if ($this->userAgent()->getBrowserType() != 'mobile') {
         // Display at 75% width on normal pages
-        echo $this->tinySrc('/images/seascape.jpg', array('width' => 'x75'))
+        echo $this->tinySrc('/images/seascape.jpg', array('width' => 'x75'));
     } else {
         // Full supported width on mobile devices
         echo $this->tinySrc('/images/seascape.jpg');
@@ -17,6 +17,11 @@
             'controller' => 'index',
             'action'     => 'index',
         ), 'default') ?>">Home</a></li>
+
+        <li><a href="<?php echo $this->url(array(
+            'controller' => 'mobile',
+            'action'     => 'my-device',
+        ), 'default') ?>">My Device</a></li>
 
         <li><a href="<?php echo $this->url(array(
             'controller' => 'mobile',

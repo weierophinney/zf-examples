@@ -16,6 +16,7 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="details"/>
           <actionMethod actionName="image"/>
+          <actionMethod actionName="myDevice"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
@@ -38,6 +39,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Mobile">
             <viewScriptFile forActionName="image"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Mobile">
+            <viewScriptFile forActionName="myDevice"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

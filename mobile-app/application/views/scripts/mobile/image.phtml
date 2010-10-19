@@ -1,7 +1,15 @@
 <h2>Scaled Image</h2>
 
 <p>
-    <?php echo $this->tinySrc('/images/seascape.jpg') ?>
+<?php 
+    if ($this->userAgent()->getBrowserType() != 'mobile') {
+        // Display at 75% width on normal pages
+        echo $this->tinySrc('/images/seascape.jpg', array('width' => 'x75'))
+    } else {
+        // Full supported width on mobile devices
+        echo $this->tinySrc('/images/seascape.jpg');
+    }
+?>
 </p>
 
 <?php $this->placeholder('sidebar')->captureStart() ?>

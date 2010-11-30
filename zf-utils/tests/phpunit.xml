@@ -1,0 +1,17 @@
+<phpunit bootstrap="./Bootstrap.php" colors="true">
+    <testsuite name="ZF-Utils Test Suite">
+        <directory>./</directory>
+    </testsuite>
+
+    <groups>
+        <exclude>
+            <group>disable</group>
+        </exclude>
+    </groups>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../library/</directory>
+        </whitelist>
+    </filter>
+</phpunit>

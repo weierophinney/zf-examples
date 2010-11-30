@@ -11,6 +11,7 @@
  * - Iterate tokenizer results
  *   - For each T_USE, parse until ';' reached
  *     - Iterate tokens captured; all contiguous T_STRING + T_NS_SEPARATOR tokens are considered classes/namespaces
+ * - Remove any dependencies matching the namespace in the file
  */
 
 namespace Zf\Util;
@@ -77,7 +78,7 @@ class Dependencies
                 }
                 if ($insideUse && ($token === ';')) {
                     if ($insideAlias && !empty($currentAlias)) {
-                        $dependencies[] = $currentAlias;
+                        $dependencies[] = trim($currentAlias, '\\');
                     }
                     $insideUse    = false;
                     $insideAlias  = false;
@@ -90,7 +91,7 @@ class Dependencies
                     }
                     if ($insideAlias) {
                         if (!empty($currentAlias)) {
-                            $dependencies[] = $currentAlias;
+                            $dependencies[] = trim($currentAlias, '\\');
                         }
                         $insideAlias    = false;
                         $currentAlias   = '';
@@ -126,7 +127,7 @@ class Dependencies
                 default:
                     if ($insideAlias) {
                         if (!empty($currentAlias)) {
-                            $dependencies[] = $currentAlias;
+                            $dependencies[] = trim($currentAlias, '\\');
                         }
                         $insideAlias    = false;
                         $currentAlias   = '';
@@ -134,27 +135,44 @@ class Dependencies
             }
         }
 
+        // Normalize dependencies
+        // We only want:
+        // - non-empty dependencies
+        // - component-level dependencies
+        foreach ($dependencies as $k => $v) {
+            // Empty? remove
+            if (empty($v)) {
+                unset($dependencies[$k]);
+            }
+
+            $segments = explode('\\', $v);
+            // only 2-segments or less? done, as we have a component-level
+            // namespace
+            if (2 >= count($segments)) {
+                continue;
+            }
+
+            // Otherwise, reset by concatenating the first two segments
+            $dependencies[$k] = $segments[0] . '\\' . $segments[1];
+        }
+
+        // Return early if we don't have a namespace, or if we didn't find
+        // any dependencies
         if (empty($namespace) || empty($dependencies)) {
             return $dependencies;
         }
 
         // Remove dependencies that reference the same component
-        $namespaceLength = strlen($namespace);
+        // First, get the component-level namespace
+        $namespaceSegments = explode('\\', $namespace);
+        if (2 < count($namespaceSegments)) {
+            $namespace = $namespaceSegments[0] . '\\' . $namespaceSegments[1];
+        }
+
+        // Next, loop through the dependencies to see if any match this 
+        // component namespace
         foreach ($dependencies as $index => $dep) {
-            if (strlen($dep) < $namespaceLength) {
-                // Check if it references a parent component.
-                // The check for the NS separator is to ensure we're not 
-                // looking at a top-level NS.
-                if (strstr($dep, '\\')) {
-                    if (substr($namespace, 0, strlen($dep)) == $dep) {
-                        // Matches; remove from index
-                        unset($dependencies[$index]);
-                    }
-                }
-                continue;
-            }
-            if (substr($dep, 0, $namespaceLength) == $namespace) {
-                // Matches this component
+            if ($dep == $namespace) {
                 unset($dependencies[$index]);
             }
         }

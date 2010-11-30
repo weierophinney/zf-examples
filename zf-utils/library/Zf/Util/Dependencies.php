@@ -76,6 +76,10 @@ class Dependencies
                 if ($insideNamespace && ($token === ';')) {
                     $insideNamespace = false;
                 }
+                if ($insideUse && ($token === '(')) {
+                    // Inside "use" statement from closure; short circuit early
+                    $insideUse = false;
+                }
                 if ($insideUse && ($token === ';')) {
                     if ($insideAlias && !empty($currentAlias)) {
                         $dependencies[] = trim($currentAlias, '\\');
@@ -146,7 +150,8 @@ class Dependencies
             }
 
             $segments = explode('\\', $v);
-            // only 2-segments or less? done, as we have a component-level
+
+            // 2-segments or less? done, as we have a component-level
             // namespace
             if (2 >= count($segments)) {
                 continue;
@@ -171,11 +176,12 @@ class Dependencies
         if (2 < count($namespaceSegments)) {
             $namespace = $namespaceSegments[0] . '\\' . $namespaceSegments[1];
         }
+        $topLevel = $namespaceSegments[0];
 
         // Next, loop through the dependencies to see if any match this 
-        // component namespace
+        // component namespace or the top-level namespace
         foreach ($dependencies as $index => $dep) {
-            if ($dep == $namespace) {
+            if ($dep == $namespace || $dep == $topLevel) {
                 unset($dependencies[$index]);
             }
         }

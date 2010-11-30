@@ -76,4 +76,16 @@ class DependenciesTest extends \PHPUnit_Framework_TestCase
             $this->assertContains($class, $deps);
         }
     }
+
+    public function testIgnoresUseStatementsFromClosures()
+    {
+        $deps = Dependencies::getForFile(__DIR__ . '/_files/TestCase7.php');
+        $this->assertNotContains('ENT_COMPAT', $deps);
+    }
+
+    public function testIgnoresTopLevelNamespaceIfMatchesCurrentVendor()
+    {
+        $deps = Dependencies::getForFile(__DIR__ . '/_files/TestCase8.php');
+        $this->assertNotContains('Zend', $deps);
+    }
 }

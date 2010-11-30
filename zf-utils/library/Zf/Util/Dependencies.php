@@ -156,6 +156,9 @@ class Dependencies
             $dependencies[$k] = $segments[0] . '\\' . $segments[1];
         }
 
+        // Sort for uniques
+        $dependencies = array_unique($dependencies);
+
         // Return early if we don't have a namespace, or if we didn't find
         // any dependencies
         if (empty($namespace) || empty($dependencies)) {

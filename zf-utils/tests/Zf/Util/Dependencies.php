@@ -63,4 +63,17 @@ class DependenciesTest extends \PHPUnit_Framework_TestCase
             $this->assertContains($class, $deps);
         }
     }
+
+    public function testReturnsUniquesOnly()
+    {
+        $deps = Dependencies::getForFile(__DIR__ . '/_files/TestCase6.php');
+        $expected = array(
+            'Foo\Bar',
+            'Baz\Bat',
+        );
+        $this->assertEquals(count($expected), count($deps));
+        foreach ($expected as $class) {
+            $this->assertContains($class, $deps);
+        }
+    }
 }

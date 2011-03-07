@@ -1,0 +1,23 @@
+zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json *.yml" {
+ library=library {
+  Zend=Zend {
+   Di=Di {
+    ServiceLocation.php
+    DependencyEnabled.php
+    DependencyInjection.php
+    DependencyDefinition.php
+    DependencyReference.php
+    InjectibleMethod.php
+    InjectibleMethods.php
+   }
+  }
+ }
+ tests=tests {
+  Bootstrap.php
+  phpunit.xml
+  Zend=Zend {
+   Di=Di {
+   }
+  }
+ }
+}

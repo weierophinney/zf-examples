@@ -8,6 +8,7 @@ zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json
     DependencyReference.php
     InjectibleMethod.php
     InjectibleMethods.php
+    Method.php
     Reference.php
     ServiceLocation.php
    }
@@ -18,6 +19,7 @@ zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json
   phpunit.xml
   Zend=Zend {
    Di=Di {
+    MethodTest.php
     ReferenceTest.php
    }
   }

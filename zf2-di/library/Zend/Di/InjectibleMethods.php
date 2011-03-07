@@ -5,6 +5,8 @@ use Iterator;
 
 interface InjectibleMethods extends Iterator
 {
+    public function insert(InjectibleMethod $method);
+
     /**
      * @return MethodDefinition
      */

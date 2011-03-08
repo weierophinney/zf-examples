@@ -33,6 +33,6 @@ interface DependencyInjection
      */
     public function setDefinitions($definitions);
     
-    public function setDefinition(DependencyDefinition Definition, $serviceName = null);
+    public function setDefinition(DependencyDefinition $definition, $serviceName = null);
     public function setAlias($alias, $serviceName);
 }

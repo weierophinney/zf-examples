@@ -126,7 +126,7 @@ class Definition implements DependencyDefinition
         }
         $positions = array_values($map);
         sort($positions);
-        if ($positions != range(0, count($positions) - 1)) {
+        if (!empty($positions) && ($positions != range(0, count($positions) - 1))) {
             throw new Exception\InvalidPositionException('Positions are non-sequential');
         }
         $this->constructorParamMap = $map;

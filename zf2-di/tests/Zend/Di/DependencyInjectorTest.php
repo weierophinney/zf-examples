@@ -10,24 +10,6 @@ class DependencyInjectorTest extends TestCase
         $this->di = new DependencyInjector;
     }
 
-    /**
-     * @dataProvider loadedClasses
-     */
-    public function testNoDefinitionsByDefault($class)
-    {
-        $this->assertFalse($this->di->get($class));
-    }
-
-    public function loadedClasses()
-    {
-        $classes = get_declared_classes();
-        $return  = array();
-        foreach (get_declared_classes() as $class) {
-            $return[] = array($class);
-        }
-        return $return;
-    }
-
     public function testPassingInvalidDefinitionRaisesException()
     {
         $definitions = array('foo');
@@ -184,15 +166,14 @@ class DependencyInjectorTest extends TestCase
         $this->assertNull($this->di->newInstance($class));
     }
 
-    public function testUnmatchedReferenceInDefinitionParametersRaisesException()
+    public function testUnmatchedReferenceInDefinitionParametersResultsInNullInjection()
     {
         $struct   = new Definition('Zend\Di\TestAsset\Struct');
         $struct->setParam('param1', 'foo')
-               ->setParam('param2', new Reference('Zend\Di\TestAsset\ComposedClass'));
-        $this->di->setDefinition($composed)
-                 ->setDefinition($struct);
-        $this->setExpectedException('Zend\Di\Exception\UndefinedReferenceException');
+               ->setParam('param2', new Reference('voodoo'));
+        $this->di->setDefinition($struct);
         $test = $this->di->get('Zend\Di\TestAsset\Struct');
+        $this->assertNull($test->param2);
     }
 
     public function testReferenceInDefinitionParametersCausesInjection()

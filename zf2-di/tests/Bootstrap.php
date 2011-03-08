@@ -50,7 +50,11 @@ set_include_path(implode(PATH_SEPARATOR, $path));
  */
 spl_autoload_register(function($class) {
     $file = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $class) . '.php';
-    return include_once($file);
+    // This ensures we don't get notices when a classfile cannot be resolved
+    if (false !== ($file = stream_resolve_include_path($file))) {
+        return include_once($file);
+    }
+    return false;
 });
 
 /*

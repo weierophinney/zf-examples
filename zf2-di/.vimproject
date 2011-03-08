@@ -1,4 +1,5 @@
 zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json *.yml" {
+ TODO.txt
  library=library {
   Zend=Zend {
    Di=Di {
@@ -15,6 +16,7 @@ zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json
     Methods.php
     Reference.php
     ServiceLocation.php
+    ServiceLocator.php
     Exception=Exception {
      ClassNotFoundException.php
      InvalidArgumentException.php
@@ -35,6 +37,7 @@ zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json
     MethodTest.php
     MethodsTest.php
     ReferenceTest.php
+    ServiceLocatorTest.php
     TestAsset=TestAsset {
      ComposedClass.php
      InjectedMethod.php

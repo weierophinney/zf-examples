@@ -1,0 +1,7 @@
+ - DependencyInjector:
+   - Should parameters be considered when retrieving instances? 
+     I.e., if an instance has been previously retrieved, but new parameters are
+     passed, do we create a new instance, or return the previous?
+   - Detect recursive references?
+   - Static method injection?
+   - Factory to create definitions/aliases from configuration

@@ -8,6 +8,7 @@ interface DependencyDefinition
     public function getClass();
 
     public function setParam($name, $value);
+    public function setParams(array $params);
     /**
      * @param array $map Map of name => position pairs for constructor arguments
      */

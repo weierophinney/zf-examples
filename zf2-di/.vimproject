@@ -6,6 +6,7 @@ zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json
     DependencyDefinition.php
     DependencyEnabled.php
     DependencyInjection.php
+    DependencyInjector.php
     DependencyReference.php
     Exception.php
     InjectibleMethod.php
@@ -18,6 +19,7 @@ zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json
      InvalidArgumentException.php
      InvalidParamNameException.php
      InvalidPositionException.php
+     UndefinedReferenceException.php
     }
    }
   }
@@ -28,11 +30,15 @@ zf.di=/home/matthew/git/zf-examples/zf2-di CD=. filter="*.php *.txt *.xml *.json
   Zend=Zend {
    Di=Di {
     DefinitionTest.php
+    DependencyInjectorTest.php
     MethodTest.php
     MethodsTest.php
     ReferenceTest.php
     TestAsset=TestAsset {
+     ComposedClass.php
+     InjectedMethod.php
      InspectedClass.php
+     Struct.php
     }
    }
   }

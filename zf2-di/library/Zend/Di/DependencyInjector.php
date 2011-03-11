@@ -189,6 +189,9 @@ class DependencyInjector implements DependencyInjection
                 return new $class();
             case 1:
                 $param = array_shift($params);
+                if (null === $param) {
+                    return new $class();
+                }
                 if ($param instanceof DependencyReference) {
                     $param = $this->get($param->getServiceName());
                 }

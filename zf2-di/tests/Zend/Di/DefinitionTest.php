@@ -182,4 +182,23 @@ class DefinitionTest extends TestCase
         $this->definition->addTags($tags);
         $this->assertEquals($tags, $this->definition->getTags());
     }
+
+    public function testNoConstructorCallbackByDefault()
+    {
+        $this->assertFalse($this->definition->hasConstructorCallback());
+    }
+
+    public function testReturnsTrueForHasConstructorCallbackWhenOneProvided()
+    {
+        $callback = function () {};
+        $this->definition->setConstructorCallback($callback);
+        $this->assertTrue($this->definition->hasConstructorCallback());
+    }
+
+    public function testCanSetConstructorCallback()
+    {
+        $callback = function () {};
+        $this->definition->setConstructorCallback($callback);
+        $this->assertSame($callback, $this->definition->getConstructorCallback());
+    }
 }

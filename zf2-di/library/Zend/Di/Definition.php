@@ -17,6 +17,12 @@ class Definition implements DependencyDefinition
     protected $className;
 
     /**
+     * Callback that will return an instance of the defined class
+     * @var false|callback
+     */
+    protected $constructorCallback = false;
+
+    /**
      * Map of constructor argument names to positions
      * @var array
      */
@@ -77,6 +83,42 @@ class Definition implements DependencyDefinition
     public function getClass()
     {
         return $this->className;
+    }
+
+    /**
+     * Provide a callback to use in order to get an instance
+     * 
+     * @param  callback $callback 
+     * @return Definition
+     */
+    public function setConstructorCallback($callback)
+    {
+        $this->constructorCallback = $callback;
+        return $this;
+    }
+
+    /**
+     * Retrieve the constructor callback, if any
+     * 
+     * @return false|callback
+     */
+    public function getConstructorCallback()
+    {
+        return $this->constructorCallback;
+    }
+
+    /**
+     * Do we define a constructor callback?
+     * 
+     * @return bool
+     */
+    public function hasConstructorCallback()
+    {
+        if (false === $this->constructorCallback) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

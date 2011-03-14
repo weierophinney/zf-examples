@@ -4,4 +4,5 @@
      passed, do we create a new instance, or return the previous?
    - Detect recursive references?
    - Static method injection?
+   ✓ Factory injection
    - Factory to create definitions/aliases from configuration

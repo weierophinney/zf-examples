@@ -7,6 +7,10 @@ interface DependencyDefinition
 
     public function getClass();
 
+    public function setConstructorCallback($callback);
+    public function getConstructorCallback();
+    public function hasConstructorCallback();
+
     public function setParam($name, $value);
     public function setParams(array $params);
     /**

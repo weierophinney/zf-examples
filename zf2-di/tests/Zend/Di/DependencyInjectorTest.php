@@ -271,6 +271,52 @@ class DependencyInjectorTest extends TestCase
     }
 
     /**
+     * @dataProvider constructorCallbacks
+     */
+    public function testUsesConstructorCallbackIfDefinedInDefinition($callback)
+    {
+        $struct = new Definition('Zend\Di\TestAsset\Struct');
+        $struct->setConstructorCallback($callback);
+        $struct->setParam('params', array('foo' => 'bar'));
+        $struct->setParamMap(array('params' => 0));
+        $this->di->setDefinition($struct, 'struct');
+        $test = $this->di->get('struct');
+        $this->assertInstanceOf('stdClass', $test);
+        $this->assertNotInstanceOf('Zend\Di\TestAsset\Struct', $test);
+        $this->assertEquals('bar', $test->foo);
+    }
+
+    public function constructorCallbacks()
+    {
+        return array(
+            array(__CLASS__ . '::structFactory'),
+            array(array($this, 'structFactory')),
+            array(function (array $params) {
+                $o = (object) $params;
+                return $o;
+            }),
+        );
+    }
+
+    public static function structFactory(array $params)
+    {
+        $o = (object) $params;
+        return $o;
+    }
+
+    public function testRaisesExceptionForInvalidConstructorCallback()
+    {
+        $struct = new Definition('Zend\Di\TestAsset\Struct');
+        $struct->setConstructorCallback(array('foo' => 'bar'));
+        $struct->setParam('params', array('foo' => 'bar'));
+        $struct->setParamMap(array('params' => 0));
+        $this->di->setDefinition($struct, 'struct');
+
+        $this->setExpectedException('Zend\Di\Exception\InvalidCallbackException');
+        $test = $this->di->get('struct');
+    }
+
+    /**
      * @todo tests for recursive DI calls
      */
 }

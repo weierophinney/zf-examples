@@ -145,7 +145,12 @@ class DependencyInjector implements DependencyInjection
     {
         $class  = $definition->getClass();
         $params = array_merge($definition->getParams(), $params);
-        $object = $this->getInstanceFromClassName($class, $params);
+
+        if ($definition->hasConstructorCallback()) {
+            $object = $this->getInstanceFromCallback($definition->getConstructorCallback(), $params);
+        } else {
+            $object = $this->getInstanceFromClassName($class, $params);
+        }
         $this->injectMethods($object, $definition);
         return $object;
     }
@@ -215,6 +220,22 @@ class DependencyInjector implements DependencyInjection
                 $r = new ReflectionClass($class);
                 return $r->newInstanceArgs($params);
         }
+    }
+
+    /**
+     * Get an object instance from the defined callback
+     * 
+     * @param  callback $callback 
+     * @param  array $params 
+     * @return object
+     * @throws Exception\InvalidCallbackException
+     */
+    protected function getInstanceFromCallback($callback, array $params)
+    {
+        if (!is_callable($callback)) {
+            throw new Exception\InvalidCallbackException('An invalid constructor callback was provided');
+        }
+        return call_user_func_array($callback, $params);
     }
 
     /**

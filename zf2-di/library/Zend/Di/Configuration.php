@@ -1,7 +1,7 @@
 <?php
 namespace Zend\Di;
 
-class Builder
+class Configuration
 {
     /**
      * @var DependencyInjection

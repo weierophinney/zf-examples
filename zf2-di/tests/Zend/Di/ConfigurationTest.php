@@ -12,37 +12,37 @@ class ConfigurationTest extends TestCase
 {
     public function testCanCreateObjectGraphFromArrayConfiguration()
     {
-        $config  = $this->getConfig();
-        $di      = new DependencyInjector();
-        $builder = new Builder($di);
-        $builder->fromArray($config);
+        $config    = $this->getConfig();
+        $di        = new DependencyInjector();
+        $dibuilder = new Configuration($di);
+        $dibuilder->fromArray($config);
         $this->assertObjectGraph($di);
     }
 
     public function testCanCreateObjectGraphFromZendConfig()
     {
-        $config  = new Config($this->getConfig());
-        $di      = new DependencyInjector();
-        $builder = new Builder($di);
-        $builder->fromConfig($config);
+        $config    = new Config($this->getConfig());
+        $di        = new DependencyInjector();
+        $dibuilder = new Configuration($di);
+        $dibuilder->fromConfig($config);
         $this->assertObjectGraph($di);
     }
 
     public function testCanCreateObjectGraphFromIniConfig()
     {
-        $config  = new IniConfig(__DIR__ . '/_files/config.ini', 'testing');
-        $di      = new DependencyInjector();
-        $builder = new Builder($di);
-        $builder->fromConfig($config);
+        $config    = new IniConfig(__DIR__ . '/_files/config.ini', 'testing');
+        $di        = new DependencyInjector();
+        $dibuilder = new Configuration($di);
+        $dibuilder->fromConfig($config);
         $this->assertObjectGraph($di);
     }
 
     public function testCanCreateObjectGraphFromXmlConfig()
     {
-        $config  = new XmlConfig(__DIR__ . '/_files/config.xml', 'testing');
-        $di      = new DependencyInjector();
-        $builder = new Builder($di);
-        $builder->fromConfig($config);
+        $config    = new XmlConfig(__DIR__ . '/_files/config.xml', 'testing');
+        $di        = new DependencyInjector();
+        $dibuilder = new Configuration($di);
+        $dibuilder->fromConfig($config);
         $this->assertObjectGraph($di);
     }
 

@@ -2,7 +2,11 @@
 namespace Zend\Di;
 
 use PHPUnit_Framework_TestCase as TestCase,
-    Zend\Config\Config;
+    Zend\Config\Config,
+    Zend\Config\Ini as IniConfig,
+    Zend\Config\Json as JsonConfig,
+    Zend\Config\Xml as XmlConfig,
+    Zend\Config\Yaml as YamlConfig;
 
 class ConfigurationTest extends TestCase
 {
@@ -18,6 +22,24 @@ class ConfigurationTest extends TestCase
     public function testCanCreateObjectGraphFromZendConfig()
     {
         $config  = new Config($this->getConfig());
+        $di      = new DependencyInjector();
+        $builder = new Builder($di);
+        $builder->fromConfig($config);
+        $this->assertObjectGraph($di);
+    }
+
+    public function testCanCreateObjectGraphFromIniConfig()
+    {
+        $config  = new IniConfig(__DIR__ . '/_files/config.ini', 'testing');
+        $di      = new DependencyInjector();
+        $builder = new Builder($di);
+        $builder->fromConfig($config);
+        $this->assertObjectGraph($di);
+    }
+
+    public function testCanCreateObjectGraphFromXmlConfig()
+    {
+        $config  = new XmlConfig(__DIR__ . '/_files/config.xml', 'testing');
         $di      = new DependencyInjector();
         $builder = new Builder($di);
         $builder->fromConfig($config);

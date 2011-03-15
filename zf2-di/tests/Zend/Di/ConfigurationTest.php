@@ -15,27 +15,30 @@ class ConfigurationTest extends TestCase
         $this->markTestIncomplete();
     }
 
-    /**
-     * @todo notation for references...
-     */
     public function getConfig()
     {
         return array(
             'definitions' => array(
                 array(
-                    'class' => 'className'
+                    'class' => 'className',
                     'constructor_callback' => false,
+                        // or string, or array; if array, 'class' and 'method' 
+                        // strings
                     'params' => array(
                         'name' => 'value',
+                        // if value is an array, look for '__reference' key, 
+                        // and, if found, create a Reference object
                     ),
                     'param_map' => array(
                     ),
-                    'tags' => array()
+                    'tags' => array(),
                     'shared' => true,
                     'methods' => array(
                         array(
                             'name' => 'method_name',
-                            'args' => array( ... ),
+                            'args' => array( /* ... */ ),
+                                // if value is an array, look for '__reference' 
+                                // key, and, if found, create a Reference object
                         ),
                     ),
                 ),

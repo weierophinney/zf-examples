@@ -1,7 +1,8 @@
 <?php
 namespace Zend\Di;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit_Framework_TestCase as TestCase,
+    Zend\Config\Config;
 
 class ConfigurationTest extends TestCase
 {
@@ -11,7 +12,20 @@ class ConfigurationTest extends TestCase
         $di      = new DependencyInjector();
         $builder = new Builder($di);
         $builder->fromArray($config);
+        $this->assertObjectGraph($di);
+    }
 
+    public function testCanCreateObjectGraphFromZendConfig()
+    {
+        $config  = new Config($this->getConfig());
+        $di      = new DependencyInjector();
+        $builder = new Builder($di);
+        $builder->fromConfig($config);
+        $this->assertObjectGraph($di);
+    }
+
+    public function assertObjectGraph($di)
+    {
         $inspected = $di->get('inspected');
         $injected  = $di->get('injected');
         $struct    = $di->get('struct');
@@ -29,11 +43,6 @@ class ConfigurationTest extends TestCase
 
         $this->assertEquals(array('param1' => 'foo', 'param2' => 'bar'), (array) $struct);
         $this->assertSame($params, $injected->object, sprintf('Params: %s; Injected: %s', var_export($params, 1), var_export($injected, 1)));
-    }
-
-    public function testCanCreateObjectGraphFromZendConfig()
-    {
-        $this->markTestIncomplete();
     }
 
     public function getConfig()

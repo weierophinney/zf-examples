@@ -38,6 +38,42 @@ class Builder
     }
 
     /**
+     * Load definitions from a configuration object
+     *
+     * Accepts an array, an object with a toArray() method, or a Traversable 
+     * object.
+     * 
+     * @param  array|object $config 
+     * @return void
+     */
+    public function fromConfig($config)
+    {
+        if (!is_object($config)) {
+            if (is_array($config)) {
+                return $this->fromArray($config);
+            }
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Configuration must be provided as either an array or Traversable object; "%s" was provided',
+                gettype($config)
+            ));
+        }
+        if (method_exists($config, 'toArray')) {
+            return $this->fromArray($config->toArray());
+        }
+        if (!$config instanceof \Traversable) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Configuration must be provided as either an array or Traversable object; "%s" was provided',
+                get_class($config)
+            ));
+        }
+        $array = array();
+        foreach ($config as $key => $value) {
+            $array[$key] = $value;
+        }
+        return $this->fromArray($array);
+    }
+
+    /**
      * Create definitions and inject into dependency injector
      *
      * @param  array $definitions 

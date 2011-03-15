@@ -212,11 +212,7 @@ class DependencyInjector implements DependencyInjection
                 }
                 return new $class($param1, $param2);
             default:
-                foreach ($params as $key => $value) {
-                    if ($value instanceof DependencyReference) {
-                        $params[$key] = $this->get($value->getServiceName());
-                    }
-                }
+                $params = $this->resolveReferences($params);
                 $r = new ReflectionClass($class);
                 return $r->newInstanceArgs($params);
         }
@@ -235,7 +231,24 @@ class DependencyInjector implements DependencyInjection
         if (!is_callable($callback)) {
             throw new Exception\InvalidCallbackException('An invalid constructor callback was provided');
         }
+        $params = $this->resolveReferences($params);
         return call_user_func_array($callback, $params);
+    }
+
+    /**
+     * Resolve parameters referencing other services
+     * 
+     * @param  array $params 
+     * @return array
+     */
+    protected function resolveReferences(array $params)
+    {
+        foreach ($params as $key => $value) {
+            if ($value instanceof DependencyReference) {
+                $params[$key] = $this->get($value->getServiceName());
+            }
+        }
+        return $params;
     }
 
     /**

@@ -316,6 +316,28 @@ class DependencyInjectorTest extends TestCase
         $test = $this->di->get('struct');
     }
 
+    public function testConstructorCallbackAllowsPassingReferences()
+    {
+        $struct = new Definition('Zend\Di\TestAsset\Struct');
+        $struct->setConstructorCallback(function ($params) {
+            $o = new \stdClass;
+            $o->params = $params;
+            return $o;
+        });
+        $struct->setParam('params', new Reference('params'));
+        $struct->setParamMap(array('params' => 0));
+        $this->di->setDefinition($struct, 'struct');
+
+        $params = new Definition('Zend\Di\TestAsset\DummyParams');
+        $params->setParam('params', array('bar' => 'baz'))
+               ->setParamMap(array('params' => 0));
+        $this->di->setDefinition($params, 'params');
+
+        $testStruct = $this->di->get('struct');
+        $testParams = $this->di->get('params');
+        $this->assertSame($testParams, $testStruct->params, sprintf('Params: %s; struct: %s', var_export($testParams, 1), var_export($testStruct, 1)));
+    }
+
     /**
      * @todo tests for recursive DI calls
      */

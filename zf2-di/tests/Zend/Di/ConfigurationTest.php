@@ -46,6 +46,15 @@ class ConfigurationTest extends TestCase
         $this->assertObjectGraph($di);
     }
 
+    public function testCanCreateObjectGraphFromYamlConfig()
+    {
+        $config    = new YamlConfig(__DIR__ . '/_files/config.yml', 'testing');
+        $di        = new DependencyInjector();
+        $dibuilder = new Configuration($di);
+        $dibuilder->fromConfig($config);
+        $this->assertObjectGraph($di);
+    }
+
     public function assertObjectGraph($di)
     {
         $inspected = $di->get('inspected');

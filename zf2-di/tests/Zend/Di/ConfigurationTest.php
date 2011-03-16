@@ -55,6 +55,15 @@ class ConfigurationTest extends TestCase
         $this->assertObjectGraph($di);
     }
 
+    public function testCanCreateObjectGraphFromJsonConfig()
+    {
+        $config    = new JsonConfig(__DIR__ . '/_files/config.json', 'testing');
+        $di        = new DependencyInjector();
+        $dibuilder = new Configuration($di);
+        $dibuilder->fromConfig($config);
+        $this->assertObjectGraph($di);
+    }
+
     public function assertObjectGraph($di)
     {
         $inspected = $di->get('inspected');

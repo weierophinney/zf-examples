@@ -35,4 +35,11 @@ interface DependencyInjection
     
     public function setDefinition(DependencyDefinition $definition, $serviceName = null);
     public function setAlias($alias, $serviceName);
+
+    /**@+
+     * Methods for introspection; used for building locators from DI definitions
+     */
+    public function getDefinitions();
+    public function getAliases();
+    /**@-*/
 }

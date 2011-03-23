@@ -135,6 +135,26 @@ class DependencyInjector implements DependencyInjection
     }
 
     /**
+     * Retrieve aggregated definitions
+     * 
+     * @return array
+     */
+    public function getDefinitions()
+    {
+        return $this->definitions;
+    }
+
+    /**
+     * Retrieve defined aliases
+     * 
+     * @return array
+     */
+    public function getAliases()
+    {
+        return $this->aliases;
+    }
+
+    /**
      * Get an object instance based on a Definition object
      * 
      * @param  DependencyDefinition $definition 

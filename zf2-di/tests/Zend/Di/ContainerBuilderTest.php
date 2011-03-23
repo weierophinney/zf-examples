@@ -46,7 +46,7 @@ class ContainerBuilderTest extends TestCase
         $this->createDefinitions();
         $builder = new ContainerBuilder($this->di);
         $builder->setContainerClass($name);
-        $builder->generateContainer($this->getTmpFile());
+        $builder->getCodeGenerator($this->getTmpFile())->write();
         $this->assertFileExists($this->tmpFile);
     }
 
@@ -164,5 +164,24 @@ class ContainerBuilderTest extends TestCase
         foreach ($expected as $method) {
             $this->assertContains($method, $methods);
         }
+    }
+
+    public function testAllowsRetrievingClassFileCodeGenerationObject()
+    {
+        $this->createDefinitions();
+        $builder = new ContainerBuilder($this->di);
+        $builder->setContainerClass('Application');
+        $codegen = $builder->getCodeGenerator();
+        $this->assertInstanceOf('Zend\CodeGenerator\Php\PhpFile', $codegen);
+    }
+
+    public function testCanSpecifyNamespaceForGeneratedPhpClassfile()
+    {
+        $this->createDefinitions();
+        $builder = new ContainerBuilder($this->di);
+        $builder->setContainerClass('Context')
+                ->setNamespace('Application');
+        $codegen = $builder->getCodeGenerator();
+        $this->assertEquals('Application', $codegen->getNamespace());
     }
 }

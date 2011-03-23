@@ -9,26 +9,56 @@ class ContainerBuilder
 
     protected $injector;
 
+    protected $namespace;
+
+    /**
+     * Constructor
+     *
+     * Requires a DependencyInjection manager on which to operate.
+     * 
+     * @param  DependencyInjection $injector 
+     * @return void
+     */
     public function __construct(DependencyInjection $injector)
     {
         $this->injector = $injector;
     }
 
+    /**
+     * Set the class name for the generated service locator container
+     * 
+     * @param  string $name 
+     * @return ContainerBuilder
+     */
     public function setContainerClass($name)
     {
         $this->containerClass = $name;
         return $this;
     }
 
-    public function generateContainer($filename)
+    /**
+     * Set the namespace to use for the generated class file
+     * 
+     * @param  string $namespace 
+     * @return ContainerBuilder
+     */
+    public function setNamespace($namespace)
     {
-        if (!is_writable($filename)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Unable to write to file "%s"; cannot generate container',
-                $filename
-            ));
-        }
+        $this->namespace = $namespace;
+        return $this;
+    }
 
+    /**
+     * Construct, configure, and return a PHP classfile code generation object
+     *
+     * Creates a Zend\CodeGenerator\Php\PhpFile object that has 
+     * created the specified class and service locator methods.
+     * 
+     * @param  null|string $filename 
+     * @return CodeGen\PhpFile
+     */
+    public function getCodeGenerator($filename = null)
+    {
         $indent     = '    ';
         $aliases    = $this->reduceAliases($this->injector->getAliases());
         $statements = array();
@@ -154,10 +184,12 @@ class ContainerBuilder
         // Build get() method
         $nameParam   = new CodeGen\PhpParameter();
         $nameParam->setName('name');
+        $defaultParams = new CodeGen\PhpParameterDefaultValue();
+        $defaultParams->setValue(array());
         $paramsParam = new CodeGen\PhpParameter();
         $paramsParam->setName('params')
-                    ->setDefaultValue(array())
-                    ->setType('array');
+                    ->setType('array')
+                    ->setDefaultValue($defaultParams);
 
         $get = new CodeGen\PhpMethod();
         $get->setName('get');
@@ -187,14 +219,32 @@ class ContainerBuilder
         $container->setMethod($get);
         $container->setMethods($aliasMethods);
 
-        // Write file
+        // Create PHP file code generation object
         $classFile = new CodeGen\PhpFile();
         $classFile->setUse('Zend\Di\ServiceLocator')
-                  ->setClass($container)
-                  ->setFilename($filename);
-        $classFile->write();
+                  ->setClass($container);
+
+        if (null !== $this->namespace) {
+            $classFile->setNamespace($this->namespace);
+        }
+
+        if (null !== $filename) {
+            $classFile->setFilename($filename);
+        }
+
+        return $classFile;
     }
 
+    /**
+     * Reduces aliases
+     *
+     * Takes alias list and reduces it to a 2-dimensional array of 
+     * class names pointing to an array of aliases that resolve to 
+     * it.
+     * 
+     * @param  array $aliasList 
+     * @return array
+     */
     protected function reduceAliases(array $aliasList)
     {
         $reduced = array();
@@ -214,6 +264,13 @@ class ContainerBuilder
         return $reduced;
     }
 
+    /**
+     * Create a PhpMethod code generation object named after a given alias
+     * 
+     * @param  string $alias 
+     * @param  class $class Class to which alias refers
+     * @return CodeGen\PhpMethod
+     */
     protected function getCodeGenMethodFromAlias($alias, $class)
     {
         $alias = $this->normalizeAlias($alias);
@@ -223,6 +280,12 @@ class ContainerBuilder
         return $method;
     }
 
+    /**
+     * Normalize an alias to a getter method name
+     * 
+     * @param  string $alias 
+     * @return string
+     */
     protected function normalizeAlias($alias)
     {
         $normalized = preg_replace('/[^a-zA-Z0-9]/', ' ', $alias);

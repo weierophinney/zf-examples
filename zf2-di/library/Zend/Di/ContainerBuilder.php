@@ -111,7 +111,7 @@ class ContainerBuilder
             } else {
                 // Normal instantiation
                 $className = '\\' . ltrim($name, '\\');
-                $creation = sprintf('$object = new \\%s(%s);', $className, implode(', ', $params));
+                $creation = sprintf('$object = new %s(%s);', $className, implode(', ', $params));
             }
 
             // Create method call code

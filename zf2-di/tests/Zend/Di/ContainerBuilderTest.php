@@ -253,5 +253,6 @@ class ContainerBuilderTest extends TestCase
         $content = $builder->getCodeGenerator()->generate();
         $count   = substr_count($content, '\Zend\Di\TestAsset\\');
         $this->assertEquals(3, $count, $content);
+        $this->assertNotContains('\\\\', $content);
     }
 }

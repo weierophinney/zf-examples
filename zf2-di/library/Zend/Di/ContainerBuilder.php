@@ -74,7 +74,9 @@ class ContainerBuilder
             //     - Foreach, in order:
             foreach ($params as $key => $param) {
             //       - If literal, use it
-                if (is_scalar($param) || is_array($param)) {
+                if (null === $param) {
+                    $params[$key] = null;
+                } elseif (is_scalar($param) || is_array($param)) {
                     // How do we do represent these?
                     $string = var_export($param, 1);
                     if (strstr($string, '::__set_state(')) {
@@ -86,7 +88,8 @@ class ContainerBuilder
                     $params[$key] = sprintf('$this->get(\'%s\')', $param->getServiceName());
                 } else {
                     // Don't think we can handle objects otherwise...
-                    throw new Exception\RuntimeException('Unable to build containers from object arguments');
+                    $message = sprintf('Unable to use object arguments when building containers. Encountered with "%s", parameter of type "%s"', $name, get_class($param));
+                    throw new Exception\RuntimeException($message);
                 }
             }
 
@@ -112,8 +115,8 @@ class ContainerBuilder
             $methods = '';
             //     - Foreach method
             foreach ($definition->getMethodCalls() as $method) {
-                $methodName   = $definition->getName();
-                $methodParams = $definition->getArgs();
+                $methodName   = $method->getName();
+                $methodParams = $method->getArgs();
             //       - Create parameters
             //         - Foreach, in order:
                 foreach ($methodParams as $key => $param) {

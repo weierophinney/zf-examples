@@ -82,7 +82,7 @@ class ContainerBuilderTest extends TestCase
         $this->assertContains('Application', $value);
     }
 
-    public function testCreatesContainerClassWithPropertiesForEachService()
+    public function testCreatesContainerClassWithCasesForEachService()
     {
         $this->buildContainerClass();
 
@@ -109,7 +109,6 @@ class ContainerBuilderTest extends TestCase
                 } while (($i < $count) && ($id != T_CONSTANT_ENCAPSED_STRING));
                 if (is_array($token)) {
                     $services[] = preg_replace('/\\\'/', '', $token[1]);
-                    // $services[] = str_replace(array('\\', '\'', '"'), '', $token[1]);
                 }
             }
         }
@@ -127,7 +126,7 @@ class ContainerBuilderTest extends TestCase
         }
     }
 
-    public function testCreatesContainerClassWithMethodsForEachServiceAlias()
+    public function testCreatesContainerClassWithMethodsForEachServiceAndAlias()
     {
         $this->buildContainerClass();
         $tokens  = token_get_all(file_get_contents($this->tmpFile));
@@ -156,8 +155,11 @@ class ContainerBuilderTest extends TestCase
         }
         $expected = array(
             'get',
+            'getZendDiTestAssetComposedClass',
             'getComposed', 
+            'getZendDiTestAssetInspectedClass',
             'getInspect',
+            'getZendDiTestAssetStruct',
             'getStruct',
         );
         $this->assertEquals(count($expected), count($methods), var_export($methods, 1));

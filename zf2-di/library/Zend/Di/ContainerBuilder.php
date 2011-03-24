@@ -59,44 +59,36 @@ class ContainerBuilder
      */
     public function getCodeGenerator($filename = null)
     {
-        $indent     = '    ';
-        $aliases    = $this->reduceAliases($this->injector->getAliases());
-        $statements = array();
+        $indent         = '    ';
+        $aliases        = $this->reduceAliases($this->injector->getAliases());
+        $caseStatements = array();
+        $getters        = array();
 
         foreach ($this->injector->getDefinitions() as $definition) {
-            $name  = $definition->getClass();
-
-            // Build body of case statement
-            //   - Create parameters
-            //     - Get parameter list
+            $name   = $definition->getClass();
+            $getter = $this->normalizeAlias($name);
             $params = $definition->getParams();
             
-            //     - Foreach, in order:
+            // Build parameter list for instantiation
             foreach ($params as $key => $param) {
-            //       - If literal, use it
-                if (null === $param) {
-                    $params[$key] = null;
-                } elseif (is_scalar($param) || is_array($param)) {
-                    // How do we do represent these?
+                if (null === $param || is_scalar($param) || is_array($param)) {
                     $string = var_export($param, 1);
                     if (strstr($string, '::__set_state(')) {
                         throw new Exception\RuntimeException('Arguments in definitions may not contain objects');
                     }
                     $params[$key] = $string;
                 } elseif ($param instanceof DependencyReference) {
-            //       - If a reference, build "$this->get('{$name}')"
-                    $params[$key] = sprintf('$this->get(\'%s\')', $param->getServiceName());
+                    $params[$key] = sprintf('$this->%s()', $this->normalizeAlias($param->getServiceName()));
                 } else {
-                    // Don't think we can handle objects otherwise...
                     $message = sprintf('Unable to use object arguments when building containers. Encountered with "%s", parameter of type "%s"', $name, get_class($param));
                     throw new Exception\RuntimeException($message);
                 }
             }
 
-            //   - Create "new" statement
+            // Create instantiation code
             $creation = '';
             if ($definition->hasConstructorCallback()) {
-            //     - If using a callback, build it, using params as an array
+                // Constructor callback
                 $callback = var_export($definition->getConstructorCallback(), 1);
                 if (strstr($callback, '::__set_state(')) {
                     throw new Exception\RuntimeException('Unable to build containers that use callbacks requiring object instances');
@@ -107,46 +99,64 @@ class ContainerBuilder
                     $creation = sprintf('$object = call_user_func(%s);', $callback);
                 }
             } else {
-            //     - If not, "new $class($paramlist)"
+                // Normal instantiation
                 $creation = sprintf('$object = new %s(%s);', $name, implode(', ', $params));
             }
 
-            //   - Create method calls
+            // Create method call code
             $methods = '';
-            //     - Foreach method
             foreach ($definition->getMethodCalls() as $method) {
                 $methodName   = $method->getName();
                 $methodParams = $method->getArgs();
-            //       - Create parameters
-            //         - Foreach, in order:
+
+                // Create method parameter representation
                 foreach ($methodParams as $key => $param) {
-                //       - If literal, use it
-                    if (is_scalar($param) || is_array($param)) {
-                        // How do we do represent these?
+                    if (null === $param || is_scalar($param) || is_array($param)) {
                         $string = var_export($param, 1);
                         if (strstr($string, '::__set_state(')) {
                             throw new Exception\RuntimeException('Arguments in definitions may not contain objects');
                         }
                         $methodParams[$key] = $string;
                     } elseif ($param instanceof DependencyReference) {
-                //       - If a reference, build "$this->get('{$name}')"
-                        $methodParams[$key] = sprintf('$this->get(\'%s\')', $param->getServiceName());
+                        $methodParams[$key] = sprintf('$this->%s()', $this->normalizeAlias($param->getServiceName()));
                     } else {
-                        // Don't think we can handle objects otherwise...
-                        throw new Exception\RuntimeException('Unable to build containers from object arguments');
+                        $message = sprintf('Unable to use object arguments when generating method calls. Encountered with class "%s", method "%s", parameter of type "%s"', $name, $methodName, get_class($param));
+                        throw new Exception\RuntimeException($message);
                     }
                 }
 
-            //       - Create call: $object->$method($params)
-                $methods .= sprintf("%s\$object->%s(%s);\n", str_repeat($indent, 2), $methodName, implode(', ', $methodParams));
+                $methods .= sprintf("\$object->%s(%s);\n", $methodName, implode(', ', $methodParams));
             }
 
-            //   - Determine whether or not to store instance
+            // Generate caching statement
             $storage = '';
             if ($definition->isShared()) {
-            //     - If so, store it in services map
-                $storage = sprintf("%s\$this->services['%s'] = \$object;\n", str_repeat($indent, 2), $name);
+                $storage = sprintf("\$this->services['%s'] = \$object;\n", $name);
             }
+
+            // Start creating getter
+            $getterBody = '';
+
+            // Create fetch of stored service
+            if ($definition->isShared()) {
+                $getterBody .= sprintf("if (isset(\$this->services['%s'])) {\n",  $name);
+                $getterBody .= sprintf("%sreturn \$this->services['%s'];\n}\n\n", $indent, $name);
+            }
+
+            // Creation and method calls
+            $getterBody .= sprintf("%s\n", $creation);
+            $getterBody .= $methods;
+
+            // Stored service
+            $getterBody .= $storage;
+
+            // End getter body
+            $getterBody .= "return \$object;\n";
+
+            $getterDef = new CodeGen\PhpMethod();
+            $getterDef->setName($getter)
+                      ->setBody($getterBody);
+            $getters[] = $getterDef;
 
             // Get cases for case statements
             $cases = array($name);
@@ -159,28 +169,13 @@ class ContainerBuilder
             foreach ($cases as $value) {
                 $statement .= sprintf("%scase '%s':\n", $indent, $value);
             }
+            $statement .= sprintf("%sreturn \$this->%s();\n", str_repeat($indent, 2), $getter);
 
-            // Create fetch of stored service
-            if ($definition->isShared()) {
-                $statement .= sprintf("%sif (isset(\$this->services['%s'])) {\n", str_repeat($indent, 2), $name);
-                $statement .= sprintf("%sreturn \$this->services['%s'];\n%s}\n\n", str_repeat($indent, 3), $name, str_repeat($indent, 2));
-            }
-
-            // Creation and method calls
-            $statement .= sprintf("%s%s\n", str_repeat($indent, 2), $creation);
-            $statement .= $methods;
-
-            // Stored service
-            $statement .= $storage;
-
-            // End case
-            $statement .= sprintf("%sreturn \$object;\n", str_repeat($indent, 2));
-
-            $statements[] = $statement;
+            $caseStatements[] = $statement;
         }
 
         // Build switch statement
-        $switch  = sprintf("switch (%s) {\n%s\n", '$name', implode("\n", $statements));
+        $switch  = sprintf("switch (%s) {\n%s\n", '$name', implode("\n", $caseStatements));
         $switch .= sprintf("%sdefault:\n%sreturn parent::get(%s, %s);\n", $indent, str_repeat($indent, 2), '$name', '$params');
         $switch .= "}\n\n";
 
@@ -202,9 +197,7 @@ class ContainerBuilder
         ));
         $get->setBody($switch);
 
-        // Loop through aliases, and build getters
-        //   - Normalize alias names
-        //   - Proxy to get($alias)
+        // Create getters for aliases
         $aliasMethods = array();
         foreach ($aliases as $class => $classAliases) {
             foreach ($classAliases as $alias) {
@@ -212,19 +205,17 @@ class ContainerBuilder
             }
         }
 
-        // Create class
+        // Create class code generation object
         $container = new CodeGen\PhpClass();
-        //   - class named after container class name
-        $container->setName($this->containerClass);
-        //   - class extends SL
-        $container->setExtendedClass('ServiceLocator');
-        //   - Attach get() method and alias methods to class
-        $container->setMethod($get);
-        $container->setMethods($aliasMethods);
+        $container->setName($this->containerClass)
+                  ->setExtendedClass('DependencyInjectionContainer')
+                  ->setMethod($get)
+                  ->setMethods($getters)
+                  ->setMethods($aliasMethods);
 
         // Create PHP file code generation object
         $classFile = new CodeGen\PhpFile();
-        $classFile->setUse('Zend\Di\ServiceLocator')
+        $classFile->setUse('Zend\Di\DependencyInjectionContainer')
                   ->setClass($container);
 
         if (null !== $this->namespace) {

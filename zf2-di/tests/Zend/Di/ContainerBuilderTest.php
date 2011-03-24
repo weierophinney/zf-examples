@@ -244,4 +244,14 @@ class ContainerBuilderTest extends TestCase
         $this->assertNotContains('NULL)', $classBody, $classBody);
     }
 
+    public function testClassNamesInstantiatedDirectlyShouldBeFullyQualified()
+    {
+        $this->createDefinitions();
+        $builder = new ContainerBuilder($this->di);
+        $builder->setContainerClass('Context')
+                ->setNamespace('Application');
+        $content = $builder->getCodeGenerator()->generate();
+        $count   = substr_count($content, '\Zend\Di\TestAsset\\');
+        $this->assertEquals(3, $count, $content);
+    }
 }

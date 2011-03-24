@@ -85,6 +85,16 @@ class ContainerBuilder
                 }
             }
 
+            // Strip null arguments from the end of the params list
+            $reverseParams = array_reverse($params, true);
+            foreach ($reverseParams as $key => $param) {
+                if ('NULL' === $param) {
+                    unset($params[$key]);
+                    continue;
+                }
+                break;
+            }
+
             // Create instantiation code
             $creation = '';
             if ($definition->hasConstructorCallback()) {
@@ -123,6 +133,16 @@ class ContainerBuilder
                         $message = sprintf('Unable to use object arguments when generating method calls. Encountered with class "%s", method "%s", parameter of type "%s"', $name, $methodName, get_class($param));
                         throw new Exception\RuntimeException($message);
                     }
+                }
+
+                // Strip null arguments from the end of the params list
+                $reverseParams = array_reverse($methodParams, true);
+                foreach ($reverseParams as $key => $param) {
+                    if ('NULL' === $param) {
+                        unset($methodParams[$key]);
+                        continue;
+                    }
+                    break;
                 }
 
                 $methods .= sprintf("\$object->%s(%s);\n", $methodName, implode(', ', $methodParams));

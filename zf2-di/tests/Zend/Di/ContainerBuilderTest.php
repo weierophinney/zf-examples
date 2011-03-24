@@ -186,4 +186,62 @@ class ContainerBuilderTest extends TestCase
         $codegen = $builder->getCodeGenerator();
         $this->assertEquals('Application', $codegen->getNamespace());
     }
+
+    /**
+     * @group nullargs
+     */
+    public function testNullAsOnlyArgumentResultsInEmptyParameterList()
+    {
+        $def = new Definition('Zend\Di\TestAsset\OptionalArg');
+        $def->setParamMap(array('param' => 0))
+            ->setParam('param', null);
+        $this->di->setDefinition($def, 'optional');
+
+        $builder = new ContainerBuilder($this->di);
+        $builder->setContainerClass('Container');
+        $codeGen = $builder->getCodeGenerator();
+        $classBody = $codeGen->generate();
+        $this->assertNotContains('NULL)', $classBody, $classBody);
+    }
+
+    /**
+     * @group nullargs
+     */
+    public function testNullAsLastArgumentsResultsInTruncatedParameterList()
+    {
+        $struct = new Definition('Zend\Di\TestAsset\Struct');
+        $struct->setParam('param1', 'foo')
+               ->setParam('param2', 'bar');
+        $dummy  = new Definition('Zend\Di\TestAsset\DummyParams');
+        $dummy->setConstructorCallback(array('Zend\Di\TestAsset\StaticFactory', 'factory'))
+              ->setParam('struct', new Reference('struct'))
+              ->setParam('params', null)
+              ->setParamMap(array('struct' => 0, 'params' => 1));
+        $this->di->setDefinition($struct, 'struct')
+                 ->setDefinition($dummy, 'dummy');
+
+        $builder = new ContainerBuilder($this->di);
+        $builder->setContainerClass('Container');
+        $codeGen = $builder->getCodeGenerator();
+        $classBody = $codeGen->generate();
+        $this->assertNotContains('NULL)', $classBody, $classBody);
+    }
+
+    /**
+     * @group nullargs
+     */
+    public function testNullArgumentsResultInEmptyMethodParameterList()
+    {
+        $def = new Definition('Zend\Di\TestAsset\OptionalArg');
+        $def->setParamMap(array('param' => 0))
+            ->addMethodCall('inject', array(null, null));
+        $this->di->setDefinition($def, 'optional');
+
+        $builder = new ContainerBuilder($this->di);
+        $builder->setContainerClass('Container');
+        $codeGen = $builder->getCodeGenerator();
+        $classBody = $codeGen->generate();
+        $this->assertNotContains('NULL)', $classBody, $classBody);
+    }
+
 }

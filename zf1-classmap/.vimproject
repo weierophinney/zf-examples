@@ -1,0 +1,52 @@
+zf1classmap=/home/matthew/git/zf-examples/zf1-classmap CD=. filter="*.php *.xml" {
+ bin=bin {
+ classmap_generator.php
+ }
+ library=library {
+  ZendX=ZendX {
+   File=File {
+    ClassFileLocator.php
+   }
+   Loader=Loader {
+    AutoloaderFactory.php
+    ClassMapAutoloader.php
+    SplAutoloader.php
+    StandardAutoloader.php
+   }
+  }
+ }
+ tests=tests {
+  Bootstrap.php
+  _autoload.php
+  phpunit.xml
+  ZendX=ZendX {
+   File=File {
+    ClassFileLocatorTest.php
+    _files=_files {
+     locator-should-skip-this.php
+     locator-should-skip-this.xml
+    }
+    TestAsset=TestAsset {
+     LocatorShouldFindThis.php
+    }
+   }
+   Loader=Loader {
+    ClassMapAutoloaderTest.php
+    StandardAutoloaderTest.php
+    _files=_files {
+     badmap.php
+     goodmap.php
+    }
+    TestAsset=TestAsset {
+     ClassMappedClass.php
+     NamespacedClass.php
+     PrefixedClass.php
+     StandardAutoloader.php
+     TestNamespace=TestNamespace {
+      FallbackCase.php
+     }
+    }
+   }
+  }
+ }
+}

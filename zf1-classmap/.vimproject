@@ -1,6 +1,7 @@
-zf1classmap=/home/matthew/git/zf-examples/zf1-classmap CD=. filter="*.php *.xml" {
+zf1classmap=/home/matthew/git/zf-examples/zf1-classmap CD=. filter="*.php *.xml *.md" {
+ README.md
  bin=bin {
- classmap_generator.php
+  classmap_generator.php
  }
  library=library {
   ZendX=ZendX {

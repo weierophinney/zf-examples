@@ -222,7 +222,7 @@ class ZendX_Loader_StandardAutoloader implements ZendX_Loader_SplAutoloader
         if (false !== strpos($class, self::NS_SEPARATOR)) {
             if ($this->loadClass($class, self::LOAD_NS)) {
                 return $class;
-            } elseif ($this->isFallbackAutoloader()) {
+            } elseif ($isFallback) {
                 return $this->loadClass($class, self::ACT_AS_FALLBACK);
             }
             return false;
@@ -230,12 +230,14 @@ class ZendX_Loader_StandardAutoloader implements ZendX_Loader_SplAutoloader
         if (false !== strpos($class, self::PREFIX_SEPARATOR)) {
             if ($this->loadClass($class, self::LOAD_PREFIX)) {
                 return $class;
-            } elseif ($this->isFallbackAutoloader()) {
+            } elseif ($isFallback) {
                 return $this->loadClass($class, self::ACT_AS_FALLBACK);
             }
             return false;
         }
-                return $this->loadClass($class, self::ACT_AS_FALLBACK);
+        if ($isFallback) {
+            return $this->loadClass($class, self::ACT_AS_FALLBACK);
+        }
         return false;
     }
 
@@ -305,7 +307,6 @@ class ZendX_Loader_StandardAutoloader implements ZendX_Loader_SplAutoloader
                 if (file_exists($filename)) {
                     return include $filename;
                 }
-                return false;
             }
         }
         return false;

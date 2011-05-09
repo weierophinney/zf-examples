@@ -49,6 +49,7 @@ if (!is_dir($libPath)) {
 
 // Setup autoloading
 $loader = new ZendX_Loader_StandardAutoloader();
+$loader->setFallbackAutoloader(true);
 $loader->register();
 
 $rules = array(

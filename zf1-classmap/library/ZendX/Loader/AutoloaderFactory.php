@@ -33,7 +33,7 @@ class ZendX_Loader_AutoloaderFactory
     protected static $loaders = array();
 
     /**
-     * @var StandardAutoloader StandardAutoloader instance for resolving 
+     * @var ZendX_Loader_StandardAutoloader StandardAutoloader instance for resolving 
      * autoloader classes via the include_path
      */
     protected static $standardAutoloader;
@@ -123,7 +123,7 @@ class ZendX_Loader_AutoloaderFactory
         }
 
         require_once dirname(__FILE__) . '/StandardAutoloader.php';
-        $loader = new StandardAutoloader();
+        $loader = new ZendX_Loader_StandardAutoloader();
         $loader->setFallbackAutoloader(true);
         self::$standardAutoloader = $loader;
         return self::$standardAutoloader;

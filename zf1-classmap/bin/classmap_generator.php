@@ -122,15 +122,16 @@ $l = new ZendX_File_ClassFileLocator($path);
 // classname => filename, where the filename is relative to the library path
 $map    = new stdClass;
 $strip .= DIRECTORY_SEPARATOR;
-iterator_apply($l, function() use ($l, $map, $strip){
-    $file      = $l->current();
+function createMap(Iterator $i, $map, $strip) {
+    $file      = $i->current();
     $namespace = empty($file->namespace) ? '' : $file->namespace . '\\';
     $filename  = str_replace($strip, '', $file->getRealpath());
 
     $map->{$namespace . $file->classname} = $filename;
 
     return true;
-});
+}
+iterator_apply($l, 'createMap', array($l, $map, $strip));
 
 // Create a file with the class/file map.
 // Stupid syntax highlighters make separating < from PHP declaration necessary

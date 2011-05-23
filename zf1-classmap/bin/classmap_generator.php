@@ -127,6 +127,9 @@ function createMap(Iterator $i, $map, $strip) {
     $namespace = empty($file->namespace) ? '' : $file->namespace . '\\';
     $filename  = str_replace($strip, '', $file->getRealpath());
 
+    // Windows portability
+    $filename  = str_replace(array('/', '\\'), "' . DIRECTORY_SEPARATOR . '", $filename);
+
     $map->{$namespace . $file->classname} = $filename;
 
     return true;
@@ -142,7 +145,7 @@ $content = '<' . "?php\n"
 
 // Prefix with dirname(__FILE__); modify the generated content
 $content = preg_replace('#(=> )#', '$1$' . $dirStore . ' . DIRECTORY_SEPARATOR . ', $content);
-$content = str_replace(array('/', '\\'), "' . DIRECTORY_SEPARATOR . '", $content);
+$content = str_replace("\\'", "'", $content);
 
 // Write the contents to disk
 file_put_contents($output, $content);

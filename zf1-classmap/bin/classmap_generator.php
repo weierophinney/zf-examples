@@ -135,11 +135,14 @@ iterator_apply($l, 'createMap', array($l, $map, $strip));
 
 // Create a file with the class/file map.
 // Stupid syntax highlighters make separating < from PHP declaration necessary
+$dirStore = 'dirname_' . uniqid();
 $content = '<' . "?php\n"
+         . '$' . $dirStore . " = dirname(__FILE__);\n"
          . 'return ' . var_export((array) $map, true) . ';';
 
 // Prefix with dirname(__FILE__); modify the generated content
-$content = preg_replace('#(=> )#', '$1dirname(__FILE__) . DIRECTORY_SEPARATOR . ', $content);
+$content = preg_replace('#(=> )#', '$1$' . $dirStore . ' . DIRECTORY_SEPARATOR . ', $content);
+$content = str_replace(array('/', '\\'), "' . DIRECTORY_SEPARATOR . '", $content);
 
 // Write the contents to disk
 file_put_contents($output, $content);

@@ -127,6 +127,16 @@ function createMap(Iterator $i, $map, $strip) {
     $namespace = empty($file->namespace) ? '' : $file->namespace . '\\';
     $filename  = str_replace($strip, '', $file->getRealpath());
 
+    //If the class is already declared in other file -> exit
+    if (isset($map->{$namespace . $file->classname}) && $map->{$namespace . $file->classname}) {
+        printf('Duplicate class "%s" in files %s and %s' . "\n",
+            $namespace . $file->classname,
+            $map->{$namespace . $file->classname},
+            $filename
+        );
+        exit();
+    }
+
     // Windows portability
     $filename  = str_replace(array('/', '\\'), "' . DIRECTORY_SEPARATOR . '", $filename);
 

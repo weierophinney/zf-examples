@@ -30,13 +30,13 @@ class ZendX_Loader_AutoloaderFactory
     /**
      * @var array All autoloaders registered using the factory
      */
-    protected static $loaders = array();
+    protected static $_loaders = array();
 
     /**
      * @var ZendX_Loader_StandardAutoloader StandardAutoloader instance for resolving 
      * autoloader classes via the include_path
      */
-    protected static $standardAutoloader;
+    protected static $_standardAutoloader;
 
     /**
      * Not meant to be instantiable
@@ -86,12 +86,13 @@ class ZendX_Loader_AutoloaderFactory
                     throw new InvalidArgumentException(sprintf('Autoloader class "%s" not loaded', $class));
                 }
             }
+            
             $loader = new $class($opts);
             if (!$loader instanceof ZendX_Loader_SplAutoloader) {
                 throw new DomainException(sprintf('Autoloader class "%s" does not implement ZendX_Loader_SplAutoloader', $class));
             }
             $loader->register();
-            self::$loaders[] = new $loader;
+            self::$_loaders[] = $loader;
         }
     }
 
@@ -104,7 +105,7 @@ class ZendX_Loader_AutoloaderFactory
      */
     public static function getRegisteredAutoloaders()
     {
-        return static::$loaders;
+        return static::$_loaders;
     }
 
     /**
@@ -118,14 +119,14 @@ class ZendX_Loader_AutoloaderFactory
      */
     protected static function getStandardAutoloader()
     {
-        if (null !== self::$standardAutoloader) {
-            return self::$standardAutoloader;
+        if (null !== self::$_standardAutoloader) {
+            return self::$_standardAutoloader;
         }
 
         require_once dirname(__FILE__) . '/StandardAutoloader.php';
         $loader = new ZendX_Loader_StandardAutoloader();
         $loader->setFallbackAutoloader(true);
-        self::$standardAutoloader = $loader;
-        return self::$standardAutoloader;
+        self::$_standardAutoloader = $loader;
+        return self::$_standardAutoloader;
     }
 }

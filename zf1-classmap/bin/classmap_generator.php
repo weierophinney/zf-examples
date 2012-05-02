@@ -109,6 +109,8 @@ if (isset($opts->o)) {
     }
 }
 
+$path = realpath($path);
+
 $strip     = $path;
 
 if (!$usingStdout) {

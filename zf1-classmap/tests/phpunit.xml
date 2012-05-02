@@ -1,0 +1,17 @@
+<phpunit bootstrap="./Bootstrap.php" colors="true">
+    <testsuite name="Zend Framework ClassMap Autoloader Test Suite">
+        <directory>./</directory>
+    </testsuite>
+
+    <groups>
+        <exclude>
+            <group>disable</group>
+        </exclude>
+    </groups>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../library/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
